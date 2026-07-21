@@ -2,21 +2,22 @@
  * Created by alicia.sykes on 24/08/2015.
  */
 
-var request = require('request');
+var axios = require('axios');
 
 function fetchWeather(location, callback) {
 
     var appId = 'aa0f1b0be45dca476178787f941c76dc'; // This is a managed key - I don't mind if you steal it ;)
     var url = 'http://api.openweathermap.org/data/2.5/weather?q='+location+'&appid='+appId;
 
-    request({
-        url: url,
-        json: true
-    }, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            callback(processResults(body));
-        }
-    });
+    axios.get(url)
+        .then(function (response) {
+            if (response.status === 200) {
+                callback(processResults(response.data));
+            }
+        })
+        .catch(function (^rror) {
+            // Error handling if needed
+        });
 }
 
 function processResults(allResults){
